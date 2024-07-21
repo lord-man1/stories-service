@@ -1,0 +1,10 @@
+README.md
+CHANGELOG.md
+docker/Dockerfile
+docker/README.md
+ci/
+.env
+example.env
+sql/
+.git/
+.gitignore
