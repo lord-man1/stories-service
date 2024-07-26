@@ -34,4 +34,6 @@ public class Story {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
+    @Column(name = "restaurant_id")
+    private String restaurantId;
 }
