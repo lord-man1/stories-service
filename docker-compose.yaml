@@ -1,0 +1,28 @@
+version: "3"
+services:
+  video-db:
+    image: postgres
+    container_name: video-db
+    hostname: video-db
+    environment:
+      POSTGRES_PASSWORD: root_password  # please change it
+      POSTGRES_DB: spring-video
+    ports:
+      - 5433:5432
+    networks:
+      - local
+  minio:
+    image: bitnami/minio:latest
+    container_name: minio
+    hostname: minio
+    restart: always
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: root_password  # please change it
+    networks:
+      - local
+networks:
+  local:
