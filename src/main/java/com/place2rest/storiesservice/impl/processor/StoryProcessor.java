@@ -2,7 +2,7 @@ package com.place2rest.storiesservice.impl.processor;
 
 import com.place2rest.storiesservice.api.mapper.StoryMapper;
 import com.place2rest.storiesservice.impl.service.database.StorySQLService;
-import com.place2rest.storiesservice.impl.service.remote.RestaurantService;
+import com.place2rest.storiesservice.impl.service.remote.RestaurantServiceStub;
 import com.place2rest.storiesservice.vo.controller.response.story.ChangeStoryResponse;
 import com.place2rest.storiesservice.vo.controller.response.story.CreateStoryResponse;
 import com.place2rest.storiesservice.vo.controller.response.story.DeleteStoryResponse;
@@ -27,11 +27,11 @@ public class StoryProcessor {
     private static final String BASE_PATH_STORY = "https://minio.dev.place2.rest/stories/";
     private final StoryMapper mapper;
     private final Storage minioStorage;
-    private final RestaurantService restaurantService;
+    private final RestaurantServiceStub restaurantService;
     private final StorySQLService sqlService;
 
 
-    public StoryProcessor(StoryMapper mapper, Storage minioStorage, RestaurantService restaurantService, StorySQLService sqlService) {
+    public StoryProcessor(StoryMapper mapper, Storage minioStorage, RestaurantServiceStub restaurantService, StorySQLService sqlService) {
         this.mapper = mapper;
         this.minioStorage = minioStorage;
         this.restaurantService = restaurantService;
