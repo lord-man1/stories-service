@@ -1,10 +1,7 @@
 package com.place2rest.storiesservice.impl.handler;
 
 import com.place2rest.storiesservice.impl.processor.StoryProcessor;
-import com.place2rest.storiesservice.vo.controller.response.story.ChangeStoryResponse;
-import com.place2rest.storiesservice.vo.controller.response.story.CreateStoryResponse;
-import com.place2rest.storiesservice.vo.controller.response.story.DeleteStoryResponse;
-import com.place2rest.storiesservice.vo.controller.response.story.GetStoriesResponse;
+import com.place2rest.storiesservice.vo.controller.response.story.*;
 import com.place2rest.storiesservice.vo.meta.story.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -73,4 +70,25 @@ public class StoryHandler {
         return response;
     }
 
+    public GetStoryPlaylistResponse getStoryPlaylist(GetStoryPlaylistRequestMeta request) {
+        GetStoryPlaylistResponse response;
+        try {
+            response = processor.processGetStoryPlaylist(request);
+        } catch (Exception e) {
+            response = GetStoryPlaylistResponse.error(DefaultExceptionMessages.INTERNAL_ERROR_500, HttpStatus.BAD_GATEWAY, e);
+            log.error(e.getMessage(), e);
+        }
+        return response;
+    }
+
+    public GetStorySegmentResponse getStorySegment(GetStorySegmentRequestMeta request) {
+        GetStorySegmentResponse response;
+        try {
+            response = processor.processGetStorySegment(request);
+        } catch (Exception e) {
+            response = GetStorySegmentResponse.error(DefaultExceptionMessages.INTERNAL_ERROR_500, HttpStatus.BAD_GATEWAY, e);
+            log.error(e.getMessage(), e);
+        }
+        return response;
+    }
 }

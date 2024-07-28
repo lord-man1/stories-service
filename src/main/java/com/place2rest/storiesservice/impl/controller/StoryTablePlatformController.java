@@ -2,21 +2,23 @@ package com.place2rest.storiesservice.impl.controller;
 
 import com.place2rest.storiesservice.impl.orchestration.Orchestration;
 import com.place2rest.storiesservice.vo.controller.request.story.ChangeStoryRequest;
-import com.place2rest.storiesservice.vo.controller.response.story.ChangeStoryResponse;
-import com.place2rest.storiesservice.vo.controller.response.story.CreateStoryResponse;
-import com.place2rest.storiesservice.vo.controller.response.story.DeleteStoryResponse;
-import com.place2rest.storiesservice.vo.controller.response.story.GetStoriesResponse;
+import com.place2rest.storiesservice.vo.controller.response.story.*;
 import com.place2rest.storiesservice.vo.enums.MediaType;
 import com.place2rest.storiesservice.vo.meta.story.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import place2.rest.toolbox.impl.annotation.Place2RestController;
 import place2.rest.toolbox.utils.ServiceUtils;
 import place2.rest.toolbox.vo.entity.common.request.HeaderNames;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 
 @RequiredArgsConstructor
@@ -49,6 +51,7 @@ public class StoryTablePlatformController {
         return ServiceUtils.response(response);
     }
 
+    @CrossOrigin("http://localhost:63342")
     @PostMapping("")
     public ResponseEntity<CreateStoryResponse> saveStory(
             @RequestHeader(name = HeaderNames.SESSION_TOKEN, required = false)
@@ -137,6 +140,50 @@ public class StoryTablePlatformController {
         return ServiceUtils.response(response);
     }
 
+    @CrossOrigin("http://localhost:63342")
+    @GetMapping(
+            value = "/{storyId}/playlist",
+            produces = org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<StreamingResponseBody> getStoryPlaylist(
+            @PathVariable String storyId
+    ) {
 
+        var request = GetStoryPlaylistRequestMeta.builder()
+                .storyId(storyId)
+                .isPlatform(IS_PLATFORM)
+//                .token()
+                .build();
+
+        var response = orchestration.orchestrate(request);
+
+        var headers = new HttpHeaders();
+        headers.set("Content-Type", "application/vnd.apple.mpegurl");
+        headers.set("Content-Disposition", "attachment;filename=index.m3u8");
+
+        return new ResponseEntity<>(response.getResponseBody(), headers, HttpStatus.OK);
+    }
+
+    @CrossOrigin("http://localhost:63342")
+    @GetMapping(
+            value = "/{storyId}/{ts:.+}.ts",
+            produces = org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<StreamingResponseBody> ts(
+            @PathVariable String storyId,
+            @PathVariable String ts
+    ) {
+
+        var request = GetStorySegmentRequestMeta.builder()
+                .storyId(storyId)
+                .tsName(ts)
+                .build();
+
+        var response = orchestration.orchestrate(request);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/vnd.apple.mpegurl");
+        headers.set("Content-Disposition", "attachment;filename=" + ts + ".ts");
+
+        return new ResponseEntity<>(response.getResponseBody(), headers, HttpStatus.OK);
+    }
 
 }

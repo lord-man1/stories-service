@@ -1,10 +1,7 @@
 package com.place2rest.storiesservice.impl.orchestration;
 
 import com.place2rest.storiesservice.impl.handler.StoryHandler;
-import com.place2rest.storiesservice.vo.controller.response.story.ChangeStoryResponse;
-import com.place2rest.storiesservice.vo.controller.response.story.CreateStoryResponse;
-import com.place2rest.storiesservice.vo.controller.response.story.DeleteStoryResponse;
-import com.place2rest.storiesservice.vo.controller.response.story.GetStoriesResponse;
+import com.place2rest.storiesservice.vo.controller.response.story.*;
 import com.place2rest.storiesservice.vo.meta.story.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -34,5 +31,13 @@ public class Orchestration {
 
     public DeleteStoryResponse orchestrate(DeleteStoryRequestMeta request) {
         return storyHandler.deleteStory(request);
+    }
+
+    public GetStoryPlaylistResponse orchestrate(GetStoryPlaylistRequestMeta request) {
+        return storyHandler.getStoryPlaylist(request);
+    }
+
+    public GetStorySegmentResponse orchestrate(GetStorySegmentRequestMeta request) {
+        return storyHandler.getStorySegment(request);
     }
 }

@@ -1,0 +1,45 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.min.js"></script>
+    </head>
+    <body>
+        选择转码文件： <input name="file" type="file" accept="video/*" onchange="upload(event)">
+        <hr/>
+		<video id="video"  width="500" height="400" controls="controls"></video>
+    </body>
+    <script>
+    
+   		const video = document.getElementById('video');
+    	
+        function upload (e){
+            let files = e.target.files
+            if (!files) {
+                return
+            }
+            // 执行上传
+            let formData = new FormData();
+            formData.append("media", files[0])
+            formData.append("name", "Story_1")
+            formData.append("type", "VIDEO")
+            formData.append("publish_date", "2021-01-01T00:00:00+00:00")
+            formData.append("expiration_date", "2021-02-01T00:00:00+00:00")
+            fetch('http://localhost:8082/platform/restaurants/123/stories', {
+                method: 'POST',
+                body: formData
+            })
+            .then(resp =>  resp.json())
+            .then(message => {
+            		var hls = new Hls();
+        		    hls.loadSource("http://localhost:8082/platform/restaurants/123/stories/123/playlist");
+        		    hls.attachMedia(video);
+            })
+            .catch(err => {
+                console.log("DWADWDDWADWDWDWD")
+            	alert("转码异常，详情查看控制台");
+                throw err
+            })
+        }
+    </script>
+</html>
