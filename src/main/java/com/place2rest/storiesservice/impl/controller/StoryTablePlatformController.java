@@ -17,8 +17,6 @@ import place2.rest.toolbox.impl.annotation.Place2RestController;
 import place2.rest.toolbox.utils.ServiceUtils;
 import place2.rest.toolbox.vo.entity.common.request.HeaderNames;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Date;
 
 @RequiredArgsConstructor
@@ -51,7 +49,7 @@ public class StoryTablePlatformController {
         return ServiceUtils.response(response);
     }
 
-    @CrossOrigin("http://localhost:63342")
+//    @CrossOrigin("http://localhost:63342")
     @PostMapping("")
     public ResponseEntity<CreateStoryResponse> saveStory(
             @RequestHeader(name = HeaderNames.SESSION_TOKEN, required = false)
@@ -140,7 +138,45 @@ public class StoryTablePlatformController {
         return ServiceUtils.response(response);
     }
 
-    @CrossOrigin("http://localhost:63342")
+    @GetMapping("/{storyId}/poster")
+    public ResponseEntity<GetStoryPosterResponse> getStoryPoster(
+            @RequestHeader(name = HeaderNames.SESSION_TOKEN, required = false)
+            String token,
+            @PathVariable String storyId,
+            @PathVariable String restaurantId) {
+
+        var request = GetStoryPosterRequestMeta.builder()
+                .storyId(storyId)
+                .restaurantId(restaurantId)
+                .isPlatform(IS_PLATFORM)
+                .token(token)
+                .build();
+
+        var response = orchestration.orchestrate(request);
+        return ServiceUtils.response(response);
+    }
+
+    @PostMapping("/{storyId}/poster")
+    public ResponseEntity<CreateStoryPosterResponse> createStoryPoster(
+            @RequestHeader(name = HeaderNames.SESSION_TOKEN, required = false)
+            String token,
+            @PathVariable String storyId,
+            @PathVariable String restaurantId,
+            @RequestParam MultipartFile poster) {
+
+        var request = CreateStoryPosterRequestMeta.builder()
+                .storyId(storyId)
+                .restaurantId(restaurantId)
+                .poster(poster)
+                .isPlatform(IS_PLATFORM)
+                .token(token)
+                .build();
+
+        var response = orchestration.orchestrate(request);
+        return ServiceUtils.response(response);
+    }
+
+//    @CrossOrigin("http://localhost:63342")
     @GetMapping(
             value = "/{storyId}/playlist",
             produces = org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -163,7 +199,7 @@ public class StoryTablePlatformController {
         return new ResponseEntity<>(response.getResponseBody(), headers, HttpStatus.OK);
     }
 
-    @CrossOrigin("http://localhost:63342")
+//    @CrossOrigin("http://localhost:63342")
     @GetMapping(
             value = "/{storyId}/{ts:.+}.ts",
             produces = org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -175,6 +211,7 @@ public class StoryTablePlatformController {
         var request = GetStorySegmentRequestMeta.builder()
                 .storyId(storyId)
                 .tsName(ts)
+                .isPlatform(IS_PLATFORM)
                 .build();
 
         var response = orchestration.orchestrate(request);
@@ -185,5 +222,4 @@ public class StoryTablePlatformController {
 
         return new ResponseEntity<>(response.getResponseBody(), headers, HttpStatus.OK);
     }
-
 }

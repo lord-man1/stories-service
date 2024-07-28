@@ -19,14 +19,12 @@ import place2.rest.toolbox.api.storage.Storage;
 import place2.rest.toolbox.impl.annotation.Log;
 import place2.rest.toolbox.vo.toolbox.exception.RequestServiceException;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static java.lang.String.format;
@@ -51,6 +49,7 @@ public class StoryProcessor {
         this.tempDir = Paths.get(tempDir);
     }
 
+    // TODO: add POSTER by GENERATING it as SCREENSHOT OF VIDEO
     @Log(
             event = "создание истории",
             description = "создание истории ресторана"
@@ -262,5 +261,34 @@ public class StoryProcessor {
 
         sqlService.deleteByIdAndRestaurantId(meta.getId(), meta.getRestaurantId());
         return DeleteStoryResponse.success();
+    }
+
+    @Log(
+            event = "получение постера истории",
+            description = "получение постера истории"
+    )
+    @Transactional(readOnly = true)
+    public GetStoryPosterResponse processGetStoryPoster(GetStoryPosterRequestMeta meta) throws NoSuchStoryException {
+        var story = sqlService.findByIdAndRestaurantId(meta.getStoryId(), meta.getRestaurantId());
+
+        return GetStoryPosterResponse.success(
+                story.getPoster().getSrc(),
+                story.getPoster().getId()
+        );
+    }
+
+    @Log(
+            event = "создание постера истории",
+            description = "создание постера истории"
+    )
+    @Transactional(rollbackFor = Throwable.class)
+    public CreateStoryPosterResponse processCreateStoryPoster(CreateStoryPosterRequestMeta meta) throws NoSuchStoryException, IOException {
+        UUID posterId = UUID.randomUUID();
+        var story = sqlService.findByIdAndRestaurantId(meta.getStoryId(), meta.getRestaurantId());
+
+        minioStorage.save(posterId.toString(), meta.getPoster().getBytes());
+        story.savePoster(posterId.toString(), BASE_PATH_STORY + posterId);
+
+        return CreateStoryPosterResponse.success(posterId.toString());
     }
 }

@@ -1,5 +1,6 @@
 package com.place2rest.storiesservice.vo.domain;
 
+import com.place2rest.storiesservice.vo.domain.embedded.Poster;
 import com.place2rest.storiesservice.vo.enums.MediaType;
 import com.place2rest.storiesservice.vo.enums.Status;
 import jakarta.persistence.*;
@@ -25,6 +26,8 @@ public class Story {
     @Enumerated(EnumType.STRING)
     @Column(name = "media_type")
     private MediaType type;
+    @Embedded
+    private Poster poster;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     @Column(name = "publish_date")
     private Date publishDate;
@@ -36,4 +39,8 @@ public class Story {
     private Status status;
     @Column(name = "restaurant_id")
     private String restaurantId;
+
+    public void savePoster(String id, String src) {
+        this.poster = new Poster(id, src);
+    }
 }

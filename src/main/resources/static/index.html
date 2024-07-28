@@ -5,7 +5,7 @@
         <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.min.js"></script>
     </head>
     <body>
-        选择转码文件： <input name="file" type="file" accept="video/*" onchange="upload(event)">
+        Video: <input name="file" type="file" accept="video/*" onchange="upload(event)">
         <hr/>
 		<video id="video"  width="500" height="400" controls="controls"></video>
     </body>
@@ -31,14 +31,12 @@
             })
             .then(resp =>  resp.json())
             .then(message => {
-            		var hls = new Hls();
-        		    hls.loadSource("http://localhost:8082/platform/restaurants/123/stories/123/playlist");
-        		    hls.attachMedia(video);
-            })
-            .catch(err => {
-                console.log("DWADWDDWADWDWDWD")
-            	alert("转码异常，详情查看控制台");
-                throw err
+                if (message.data.story_id) {
+                    let storyId = message.data.story_id;
+                    var hls = new Hls();
+                    hls.loadSource("http://localhost:8082/platform/restaurants/123/stories/"+storyId+"/playlist");
+                    hls.attachMedia(video);
+                }
             })
         }
     </script>

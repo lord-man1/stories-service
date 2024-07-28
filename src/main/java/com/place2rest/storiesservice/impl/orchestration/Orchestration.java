@@ -40,4 +40,12 @@ public class Orchestration {
     public GetStorySegmentResponse orchestrate(GetStorySegmentRequestMeta request) {
         return storyHandler.getStorySegment(request);
     }
+
+    public GetStoryPosterResponse orchestrate(GetStoryPosterRequestMeta request) {
+        return storyHandler.getStoryPoster(request);
+    }
+
+    public CreateStoryPosterResponse orchestrate(CreateStoryPosterRequestMeta request) {
+        return storyHandler.createStoryPoster(request);
+    }
 }

@@ -1,10 +1,17 @@
 # Stories Serviced for Place2Rest
 
+## TODO
+1) Продумать по какому определителю сохранять в S3 сгенерированные файлы (.m3u8/.ts).
+2) Получать постер из видеоряда при добавлении истории (FFmpeg скриншот) 
+3) Рефакторинг
+
 ## STORY ENTITY
 
     "id": 3da400a9-bee5-4ff6-8a1b-926ca71e0b66,
     "name": "Скидки!",
     "type": "IMAGE",
+    "poster_id": "6cd4e0a9-dv4-4ff6-8a1b-926ca71edms4",
+    "poster_src": "https://minio.dev.place2.rest/stories/..."
     "publish_date": "2021-01-01",
     "expiration_date": "2021-01-01T00:00:00+00:00",
     "status": "ACTUAL"
@@ -39,6 +46,8 @@ mvn clean удаляет старый зависимости/джарники mv
 
 ## .env
 
+IN PROCESS
+
     server_port=9100
     conn_timeout=20000
     conn_url=jdbc:postgresql://localhost:5432/stories_service
@@ -46,9 +55,8 @@ mvn clean удаляет старый зависимости/джарники mv
     conn_password=localhost
     conn_min_idle=10
     conn_max=15
-    user_service_valid=http://127.0.0.1:8091
-    path_picture=/home/valery/Desktop/cat
-    max_threads=10
     redis_host=
     redis_port=
+    service_tmpdir=
     profile= DEV/PROD режим работы сервиса
+    ...

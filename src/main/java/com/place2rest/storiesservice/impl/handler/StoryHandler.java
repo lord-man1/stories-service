@@ -91,4 +91,26 @@ public class StoryHandler {
         }
         return response;
     }
+
+    public GetStoryPosterResponse getStoryPoster(GetStoryPosterRequestMeta request) {
+        GetStoryPosterResponse response;
+        try {
+            response = processor.processGetStoryPoster(request);
+        } catch (Exception e) {
+            response = GetStoryPosterResponse.error(DefaultExceptionMessages.INTERNAL_ERROR_500, HttpStatus.BAD_GATEWAY, e);
+            log.error(e.getMessage(), e);
+        }
+        return response;
+    }
+
+    public CreateStoryPosterResponse createStoryPoster(CreateStoryPosterRequestMeta request) {
+        CreateStoryPosterResponse response;
+        try {
+            response = processor.processCreateStoryPoster(request);
+        } catch (Exception e) {
+            response = CreateStoryPosterResponse.error(DefaultExceptionMessages.INTERNAL_ERROR_500, HttpStatus.BAD_GATEWAY, e);
+            log.error(e.getMessage(), e);
+        }
+        return response;
+    }
 }
