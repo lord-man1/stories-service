@@ -52,7 +52,7 @@ public class StoryTablePlatformController {
         return ServiceUtils.response(response);
     }
 
-//    @CrossOrigin("http://localhost:63342")
+    @CrossOrigin("http://localhost:63342")
     @PostMapping("")
     public ResponseEntity<CreateStoryResponse> saveStory(
             @RequestHeader(name = HeaderNames.SESSION_TOKEN, required = false)
@@ -179,7 +179,7 @@ public class StoryTablePlatformController {
         return ServiceUtils.response(response);
     }
 
-//    @CrossOrigin("http://localhost:63342")
+    @CrossOrigin("http://localhost:63342")
     @GetMapping(
             value = "/{storyId}/playlist",
             produces = org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -202,7 +202,7 @@ public class StoryTablePlatformController {
         return new ResponseEntity<>(response.getResponseBody(), headers, HttpStatus.OK);
     }
 
-//    @CrossOrigin("http://localhost:63342")
+    @CrossOrigin("http://localhost:63342")
     @GetMapping(
             value = "/{storyId}/{ts:.+}.ts",
             produces = org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE)

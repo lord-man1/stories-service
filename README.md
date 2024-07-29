@@ -16,6 +16,12 @@
     "expiration_date": "2021-01-01T00:00:00+00:00",
     "status": "ACTUAL"
 
+## TEST
+1) docker-compose up 
+2) http://localhost:9001/ -> create bucket "stories"
+3) open index.html in Mozilla Firefox from Intellij IDEA (to host it on localhost:63342)
+4) interact with intuitive and simple interface
+
 ## COMPILE AND RUN
 
     mvn clean package

@@ -95,7 +95,7 @@ public class StoryProcessor {
         );
         for (var ts : tsFiles) {
             minioStorage.save(
-                    format("%s%s.ts", videoId, ts.getFileName()),
+                    format("%s", ts.getFileName()),
                     Files.readAllBytes(ts)
             );
         }
@@ -194,7 +194,7 @@ public class StoryProcessor {
     @Transactional(readOnly = true)
     public GetStorySegmentResponse processGetStorySegment(GetStorySegmentRequestMeta meta) {
         var segment = minioStorage.findByKey(
-                format("%s%s.ts", meta.getStoryId(), meta.getTsName())
+                format("%s.ts", meta.getTsName())
         );
         return GetStorySegmentResponse.success(
                 outputStream -> outputStream.write(segment)
