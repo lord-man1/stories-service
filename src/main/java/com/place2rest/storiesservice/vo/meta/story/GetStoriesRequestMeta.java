@@ -1,11 +1,9 @@
 package com.place2rest.storiesservice.vo.meta.story;
 
 
+import com.place2rest.storiesservice.vo.enums.Status;
 import com.place2rest.storiesservice.vo.meta.Meta;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
@@ -14,6 +12,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString(callSuper = true)
 public class GetStoriesRequestMeta extends Meta {
-    private int limit;
-    private int offset;
+    private Status status;
+    @Builder.Default
+    private int limit = 0;
+    @Builder.Default
+    private int offset = 10;
 }

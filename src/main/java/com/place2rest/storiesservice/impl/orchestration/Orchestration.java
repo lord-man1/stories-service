@@ -21,7 +21,7 @@ public class Orchestration {
         return storyHandler.createStory(request);
     }
 
-    public GetStoriesResponse orchestrate(GetStoryRequestMeta request) {
+    public GetStoryResponse orchestrate(GetStoryRequestMeta request) {
         return storyHandler.getStory(request);
     }
 

@@ -26,12 +26,12 @@ public class StoryHandler {
         return response;
     }
 
-    public GetStoriesResponse getStory(GetStoryRequestMeta request) {
-        GetStoriesResponse response;
+    public GetStoryResponse getStory(GetStoryRequestMeta request) {
+        GetStoryResponse response;
         try {
             response = processor.processGetStory(request);
         } catch (Exception e) {
-            response = GetStoriesResponse.error(DefaultExceptionMessages.INTERNAL_ERROR_500, HttpStatus.BAD_GATEWAY, e);
+            response = GetStoryResponse.error(DefaultExceptionMessages.INTERNAL_ERROR_500, HttpStatus.BAD_GATEWAY, e);
             log.error(e.getMessage(), e);
         }
         return response;

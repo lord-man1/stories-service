@@ -203,20 +203,29 @@ public class StoryProcessor {
 
 
     @Log(
-            event = "получение всех историй",
-            description = "получение всех историй ресторана"
+            event = "получение всех историй (по их статусу)",
+            description = "получение всех историй ресторана (по их статусу)"
     )
     @Transactional(readOnly = true)
     public GetStoriesResponse processGetStories(GetStoriesRequestMeta meta) {
         var stories = sqlService.findAllByRestaurantId(meta.getRestaurantId());
-        return GetStoriesResponse.success(stories.stream()
+        if (meta.getStatus() != null) {
+            stories = stories.stream()
+                    .filter(v -> v.getStatus().equals(meta.getStatus()))
+                    .toList();
+        }
+        var result = stories.stream()
                 .skip(meta.getOffset())
                 .limit(meta.getLimit())
                 .map(v -> new StoryView(
                         v.getId(), v.getName(), v.getType(),
                         v.getPublishDate(), v.getExpirationDate(),
                         v.getStatus()
-                )).toList());
+                )).toList();
+        return GetStoriesResponse.success(
+                meta.getRestaurantId(),
+                result, result.size()
+        );
     }
 
     @Log(
@@ -224,11 +233,11 @@ public class StoryProcessor {
             description = "получение истории ресторана"
     )
     @Transactional(readOnly = true)
-    public GetStoriesResponse processGetStory(GetStoryRequestMeta meta) throws NoSuchStoryException {
+    public GetStoryResponse processGetStory(GetStoryRequestMeta meta) throws NoSuchStoryException {
         var story = sqlService.findByIdAndRestaurantId(
                 meta.getId(), meta.getRestaurantId()
         );
-        return GetStoriesResponse.success(new StoryView(
+        return GetStoryResponse.success(new StoryView(
                 story.getId(), story.getName(), story.getType(),
                 story.getPublishDate(), story.getExpirationDate(),
                 story.getStatus()));

@@ -2,6 +2,7 @@ package com.place2rest.storiesservice.impl.service.database;
 
 import com.place2rest.storiesservice.api.repository.StoryRepository;
 import com.place2rest.storiesservice.vo.domain.Story;
+import com.place2rest.storiesservice.vo.enums.Status;
 import com.place2rest.storiesservice.vo.exception.NoSuchStoryException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

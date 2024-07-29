@@ -4,6 +4,7 @@ import com.place2rest.storiesservice.impl.orchestration.Orchestration;
 import com.place2rest.storiesservice.vo.controller.request.story.ChangeStoryRequest;
 import com.place2rest.storiesservice.vo.controller.response.story.*;
 import com.place2rest.storiesservice.vo.enums.MediaType;
+import com.place2rest.storiesservice.vo.enums.Status;
 import com.place2rest.storiesservice.vo.meta.story.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,11 +34,13 @@ public class StoryTablePlatformController {
             @RequestHeader(name = HeaderNames.SESSION_TOKEN, required = false)
             String token,
             @PathVariable String restaurantId,
-            @RequestParam int offset,
-            @RequestParam int limit) {
+            @RequestParam(required = false) Status status,
+            @RequestParam(required = false) int offset,
+            @RequestParam(required = false) int limit) {
 
         var request = GetStoriesRequestMeta.builder()
                 .restaurantId(restaurantId)
+                .status(status)
                 .offset(offset)
                 .limit(limit)
                 .isPlatform(IS_PLATFORM)
@@ -80,7 +83,7 @@ public class StoryTablePlatformController {
     }
 
     @GetMapping("/{storyId}")
-    public ResponseEntity<GetStoriesResponse> getStory(
+    public ResponseEntity<GetStoryResponse> getStory(
             @RequestHeader(name = HeaderNames.SESSION_TOKEN, required = false)
             String token,
             @PathVariable String restaurantId,
